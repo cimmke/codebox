@@ -1,6 +1,9 @@
+from os import getenv
+
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+
 from .models import Visitor
 
 
@@ -9,7 +12,7 @@ class VisitorTests(APITestCase):
     def setUp(self):
         self.first_name = 'John'
         self.last_name = 'Doe'
-        self.email = 'john.doe@example.com'
+        self.email = getenv('GMAIL_USER', None)
         self.source_control = 'github'
         self.team_size = 10
         self.max_name_length = 255
