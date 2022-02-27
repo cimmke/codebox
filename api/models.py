@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 
 class Visitor(models.Model):
@@ -18,5 +19,5 @@ class Visitor(models.Model):
         default='other',
         max_length=max(len(s[0]) for s in SOURCE_CONTROL_CHOICES)
     )
-    team_size = models.PositiveIntegerField()
+    team_size = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     created = models.DateTimeField(auto_now_add=True)
