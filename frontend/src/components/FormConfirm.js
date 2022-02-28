@@ -1,14 +1,34 @@
 import React from "react";
 import { Grid, List, ListItem, Button, Typography, ListItemText } from "@material-ui/core";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
+import Cookies from "js-cookie";
 
 function FormConfirm(props) {
 
   const nextPage = event => {
     event.preventDefault();
-    console.log(props.values);
+
+    const csrftoken = Cookies.get('csrftoken');
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFTOKEN": csrftoken
+      },
+      body: JSON.stringify({
+          first_name: props.values.firstName,
+          last_name: props.values.lastName,
+          email: props.values.email,
+          source_control: props.values.sourceControl,
+          team_size: props.values.teamSize
+      })
+    };
+    fetch("/api/submit/", requestOptions)
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+
     props.nextStep();
-  };
+    };
 
   const previousPage = event => {
     event.preventDefault();
