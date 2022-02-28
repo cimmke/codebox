@@ -218,3 +218,22 @@ class VisitorTests(APITestCase):
         url = '/api/'
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_resubmit_within_one_day(self):
+        """
+        Verify bad request when same user submits within 24 hours
+        """
+        url = reverse(self.url_name)
+        data = {
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'email': self.email,
+            'source_control': self.source_control,
+            'team_size': self.team_size
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Visitor.objects.count(), 1)
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Visitor.objects.count(), 1)
