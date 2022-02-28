@@ -57,7 +57,9 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'frontend/build'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -131,3 +133,7 @@ EMAIL_HOST_USER = getenv('GMAIL_USER', None)
 EMAIL_HOST_PASSWORD = getenv('GMAIL_PASSWORD', None)
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'frontend/build/static',
+]
